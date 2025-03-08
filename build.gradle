@@ -14,11 +14,11 @@ buildscript {
         // Minecraft Forge
         maven {
             name = 'Forge'
-            url = 'http://files.minecraftforge.net/maven'
+            url = 'https://files.minecraftforge.net/maven'
         }
         maven {
               name 'OpenMods Third Party'
-              url 'http://repo.openmods.info/artifactory/simple/thirdparty'
+              url 'https://repo.openmods.info/artifactory/simple/thirdparty'
         }
     }
 
@@ -190,9 +190,20 @@ task apiSrcJar(type: Jar) {
     }
 }
 
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    manifest {
+        from jenkinsManifest, gitManifest, fmlManifest
+    }
+    classifier = 'deobf'
+}
+
 artifacts {
     archives apiJar
     archives apiSrcJar
+    archives sourceJar
+    archives deobfJar
+    archives jar
 }
 
 task updateTranslations(type: net.thesilkminer.gradle.plugin.translationchecker.tasks.TranslationCheckTask) {
